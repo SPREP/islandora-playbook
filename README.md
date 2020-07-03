@@ -1,10 +1,11 @@
-# Installation on bare metals machine
+# Installation on bare metal machine
 
+Also works for VM
 
 # Centos 7
 
 ```
-You need to run below code on host machine and then deploy to another machine. todo: Test if you can deploy to self
+You need to run below code on host machine and then deploy to another machine. todo: Test if you can deploy to self.
 
 # Download and install vagrant
 
@@ -32,7 +33,7 @@ $ cd islandora-playbook
 $ cp -r inventory/vagrant inventory/example
 
 # update hosts file inventory/example/hosts
-default ansible_ssh_host=example.org ansible_ssh_user=root ansible_ssh_private_key_file='/home/username/.ssh/id_rsa'
+default ansible_host=example.org ansible_ssh_host=example.org ansible_ssh_user=root ansible_ssh_private_key_file='/home/username/.ssh/id_rsa'
 
 # get ansible packages and deploy to server
 $ ansible-galaxy install -r requirements.yml
