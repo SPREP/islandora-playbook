@@ -1,11 +1,14 @@
 # Installation on bare metals machine
 
 
-# Centos
+# Centos 7
 
 ```
+You need to run below code on host machine and then deploy to another machine. todo: Test if you can deploy to self
+
 # Download and install vagrant
 
+# Install packages
 $ sudo yum install git
 $ sudo yum install openssl
 
@@ -22,13 +25,16 @@ $ vagrant plugin install vagrant-vbguest
 # edit .bashrc and append below
 $ export ISLANDORA_DISTRO="centos/7"
 
+# clone repo
 $ git clone https://github.com/Islandora-Devops/islandora-playbook
 $ cd islandora-playbook
+# create deployment profile
 $ cp -r inventory/vagrant inventory/example
 
 # update hosts file inventory/example/hosts
 default ansible_ssh_host=example.org ansible_ssh_user=root ansible_ssh_private_key_file='/home/username/.ssh/id_rsa'
 
+# get ansible packages and deploy to server
 $ ansible-galaxy install -r requirements.yml
 $ ansible-playbook -i inventory/production playbook.yml -e "islandora_distro=centos/7"
 
