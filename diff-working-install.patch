@@ -1,0 +1,191 @@
+diff --git a/roles/external/Islandora-Devops.drupal-openseadragon/tasks/install.yml b/roles/external/Islandora-Devops.drupal-openseadragon/tasks/install.yml
+index 8637aba..5ead791 100644
+--- a/roles/external/Islandora-Devops.drupal-openseadragon/tasks/install.yml
++++ b/roles/external/Islandora-Devops.drupal-openseadragon/tasks/install.yml
+@@ -1,11 +1,11 @@
+ ---
+ 
+-- name: Install Openseadragon with composer
+-  composer:
+-    command: require
+-    arguments: "{{ openseadragon_composer_item }}"
+-    working_dir: "{{ openseadragon_composer_root }}"
+-  become: no
++# - name: Install Openseadragon with composer
++#   composer:
++#     command: require
++#     arguments: "{{ openseadragon_composer_item }}"
++#     working_dir: "{{ openseadragon_composer_root }}"
++#   become: no
+ 
+ - name: Check if Seadragon Library Exists
+   stat:
+diff --git a/roles/external/Islandora-Devops.fcrepo/tasks/db-mysql.yml b/roles/external/Islandora-Devops.fcrepo/tasks/db-mysql.yml
+index f1dfb77..fe60ae0 100644
+--- a/roles/external/Islandora-Devops.fcrepo/tasks/db-mysql.yml
++++ b/roles/external/Islandora-Devops.fcrepo/tasks/db-mysql.yml
+@@ -6,7 +6,7 @@
+     login_host: "{{ fcrepo_db_host }}"
+     login_port: "{{ fcrepo_db_port }}"
+     login_user: "{{ fcrepo_db_root_user }}"
+-    login_password:  "{{ fcrepo_db_root_password }}"
++    # login_password:  "{{ fcrepo_db_root_password }}"
+     state: present
+   register: fcrepo_db_exists
+ 
+@@ -17,7 +17,7 @@
+     login_host: "{{ fcrepo_db_host }}"
+     login_port: "{{ fcrepo_db_port }}"
+     login_user: "{{ fcrepo_db_root_user }}"
+-    login_password:  "{{ fcrepo_db_root_password }}"
++    # login_password:  "{{ fcrepo_db_root_password }}"
+     priv: "{{fcrepo_db_name}}.*:ALL"
+     state: present
+     host: "%"
+diff --git a/roles/external/Islandora-Devops.tomcat8/tasks/install-RedHat.yml b/roles/external/Islandora-Devops.tomcat8/tasks/install-RedHat.yml
+index 1a88874..ec7701b 100644
+--- a/roles/external/Islandora-Devops.tomcat8/tasks/install-RedHat.yml
++++ b/roles/external/Islandora-Devops.tomcat8/tasks/install-RedHat.yml
+@@ -14,12 +14,12 @@
+     createhome: no
+   become: yes
+ 
+-- name: download and extract
+-  unarchive:
+-    src: "{{ tomcat_binary_url }}"
+-    dest: "/opt/"
+-    remote_src: yes
+-  become: yes
++# - name: download and extract
++#   unarchive:
++#     src: "{{ tomcat_binary_url }}"
++#     dest: "/opt/"
++#     remote_src: yes
++#   become: yes
+ 
+ - name: symlink install directory
+   file:
+diff --git a/roles/external/geerlingguy.drupal/tasks/build-composer-project.yml b/roles/external/geerlingguy.drupal/tasks/build-composer-project.yml
+index 1d9cbe5..0bec51e 100644
+--- a/roles/external/geerlingguy.drupal/tasks/build-composer-project.yml
++++ b/roles/external/geerlingguy.drupal/tasks/build-composer-project.yml
+@@ -1,19 +1,19 @@
+ ---
+-- name: Delete old /tmp/composer-project
+-  file:
+-    path: "/tmp/composer-project"
+-    state: absent
+-  when: not drupal_site_exists
++# - name: Delete old /tmp/composer-project
++#   file:
++#     path: "/tmp/composer-project"
++#     state: absent
++#   when: not drupal_site_exists
+ 
+-- name: Generate Drupal project with composer package in /tmp/composer-project (this may take a while).
+-  command: >
+-    {{ composer_path }} create-project
+-    {{ drupal_composer_project_package }} /tmp/composer-project
+-    {{ drupal_composer_project_options|default('--prefer-dist --no-interaction') }}
+-  when: not drupal_site_exists
+-  become: no
+-  environment:
+-      COMPOSER_PROCESS_TIMEOUT: 1200
++# - name: Generate Drupal project with composer package in /tmp/composer-project (this may take a while).
++#   command: >
++#     {{ composer_path }} create-project
++#     {{ drupal_composer_project_package }} /tmp/composer-project
++#     {{ drupal_composer_project_options|default('--prefer-dist --no-interaction') }}
++#   when: not drupal_site_exists
++#   become: no
++#   environment:
++#       COMPOSER_PROCESS_TIMEOUT: 1200
+ 
+ - name: Ensure drupal_composer_install_dir directory has proper permissions.
+   file:
+@@ -32,10 +32,10 @@
+   become: no
+   when: not drupal_site_exists
+ 
+-- name: Install dependencies with composer require (this may take a while).
+-  composer:
+-    command: require
+-    arguments: "{{ item }}"
+-    working_dir: "{{ drupal_composer_install_dir }}"
+-  with_items: "{{ drupal_composer_dependencies|default([]) }}"
+-  become: no
++# - name: Install dependencies with composer require (this may take a while).
++#   composer:
++#     command: require
++#     arguments: "{{ item }}"
++#     working_dir: "{{ drupal_composer_install_dir }}"
++#   with_items: "{{ drupal_composer_dependencies|default([]) }}"
++#   become: no
+diff --git a/roles/external/geerlingguy.drupal/tasks/build-composer.yml b/roles/external/geerlingguy.drupal/tasks/build-composer.yml
+index 508b0a9..6d37e80 100644
+--- a/roles/external/geerlingguy.drupal/tasks/build-composer.yml
++++ b/roles/external/geerlingguy.drupal/tasks/build-composer.yml
+@@ -28,10 +28,10 @@
+   when: not drupal_site_exists
+   become: no
+ 
+-- name: Install dependencies with composer require (this may take a while).
+-  composer:
+-    command: require
+-    arguments: "{{ item }}"
+-    working_dir: "{{ drupal_composer_install_dir }}"
+-  with_items: "{{ drupal_composer_dependencies|default([]) }}"
+-  become: no
++# - name: Install dependencies with composer require (this may take a while).
++#   composer:
++#     command: require
++#     arguments: "{{ item }}"
++#     working_dir: "{{ drupal_composer_install_dir }}"
++#   with_items: "{{ drupal_composer_dependencies|default([]) }}"
++#   become: no
+diff --git a/roles/external/geerlingguy.php/tasks/configure.yml b/roles/external/geerlingguy.php/tasks/configure.yml
+index f4fa94c..f1c6f37 100644
+--- a/roles/external/geerlingguy.php/tasks/configure.yml
++++ b/roles/external/geerlingguy.php/tasks/configure.yml
+@@ -8,13 +8,13 @@
+     - "{{ php_conf_paths }}"
+     - "{{ php_extension_conf_paths }}"
+ 
+-- name: Place PHP configuration file in place.
+-  template:
+-    src: php.ini.j2
+-    dest: "{{ item }}/php.ini"
+-    owner: root
+-    group: root
+-    mode: 0644
+-  with_items: "{{ php_conf_paths }}"
+-  notify: restart webserver
+-  when: php_use_managed_ini
++# - name: Place PHP configuration file in place.
++#   template:
++#     src: php.ini.j2
++#     dest: "{{ item }}/php.ini"
++#     owner: root
++#     group: root
++#     mode: 0644
++#   with_items: "{{ php_conf_paths }}"
++#   notify: restart webserver
++#   when: php_use_managed_ini
+diff --git a/roles/external/geerlingguy.php/tasks/setup-RedHat.yml b/roles/external/geerlingguy.php/tasks/setup-RedHat.yml
+index 41db907..f99e95e 100644
+--- a/roles/external/geerlingguy.php/tasks/setup-RedHat.yml
++++ b/roles/external/geerlingguy.php/tasks/setup-RedHat.yml
+@@ -1,7 +1,7 @@
+ ---
+-- name: Ensure PHP packages are installed.
+-  package:
+-    name: "{{ php_packages }}"
+-    state: "{{ php_packages_state }}"
+-    enablerepo: "{{ php_enablerepo | default(omit, true) }}"
+-  notify: restart webserver
++# - name: Ensure PHP packages are installed.
++#   package:
++#     name: "{{ php_packages }}"
++#     state: "{{ php_packages_state }}"
++#     enablerepo: "{{ php_enablerepo | default(omit, true) }}"
++#   notify: restart webserver
