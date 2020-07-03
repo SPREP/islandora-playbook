@@ -1,3 +1,39 @@
+# Installation on bare metals machine
+
+
+# Centos
+
+```
+# Download and install vagrant
+
+$ sudo yum install git
+$ sudo yum install openssl
+
+# Install Ansible
+$ curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+$ python get-pip.py --user
+
+# Then pin down Ansible to 2.8.7
+$ pip install --user -Iv ansible==2.8.7
+
+# install vagrant plugin
+$ vagrant plugin install vagrant-vbguest
+
+# edit .bashrc and append below
+$ export ISLANDORA_DISTRO="centos/7"
+
+$ git clone https://github.com/Islandora-Devops/islandora-playbook
+$ cd islandora-playbook
+$ cp -r inventory/vagrant inventory/example
+
+# update hosts file inventory/example/hosts
+default ansible_ssh_host=example.org ansible_ssh_user=root ansible_ssh_private_key_file='/home/username/.ssh/id_rsa'
+
+$ ansible-galaxy install -r requirements.yml
+$ ansible-playbook -i inventory/production playbook.yml -e "islandora_distro=centos/7"
+
+```
+
 # Islandora Playbook
 [![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](./LICENSE)
 
@@ -52,18 +88,18 @@ You can connect to the machine via the browser at [http://localhost:8000](http:/
 ### Drupal
 
 The default Drupal login details are:
-  
+
   * username: admin
   * password: islandora
 
 ### MySQL
-  
+
   * username: drupal8
   * password: islandora
 
 ### Fedora5
 
-The Fedora 5 REST API can be accessed at [http://localhost:8080/fcrepo/rest](http://localhost:8080/fcrepo/rest). 
+The Fedora 5 REST API can be accessed at [http://localhost:8080/fcrepo/rest](http://localhost:8080/fcrepo/rest).
 
 Authentication is done via [Syn](https://github.com/Islandora-CLAW/Syn) using [JWT](https://jwt.io) tokens.
 
@@ -76,11 +112,11 @@ You can access the Solr administration UI at http://localhost:8983/solr/
 You can connect to the machine via ssh:
 
   * `vagrant ssh`
-  
+
 ### ActiveMQ
 
 The default ActiveMQ login details are:
-  
+
   * username: admin
   * password: admin
 
@@ -92,17 +128,17 @@ You can access the Cantaloupe admin interface at: http://localhost:8080/cantalou
 
   * username: admin
   * password: islandora
-  
+
 You can access the IIIF interface at: http://localhost:8080/cantaloupe/iiif/2/
 
 ### JWT
 
-Islandora 8 uses JWT for authentication across the stack. Crayfish microservices, Fedora, and Drupal all use them. 
+Islandora 8 uses JWT for authentication across the stack. Crayfish microservices, Fedora, and Drupal all use them.
 Crayfish and Fedora have been set up to use a master token of `islandora` to make testing easier. To use it, just set
 the following header in HTTP requests:
 
   * `Authorization: Bearer islandora`
-  
+
 ### BlazeGraph (Bigdata)
 
 You can access the BlazeGraph interface at: http://localhost:8080/bigdata/
@@ -111,7 +147,7 @@ You have to select the islandora namespace in the [namespaces tab](http://localh
 
 ### FITS
 
-You can access the FITS Web Service at http://localhost:8080/fits/  
+You can access the FITS Web Service at http://localhost:8080/fits/
 
 ### Matomo
 
@@ -119,11 +155,11 @@ CLAW Playbook installs an instance of the [Matomo](https://matomo.org/) (formall
 
   * username: admin
   * password: islandora
- 
+
 ## Roadmap
 
-Our highest priority moving forward is testing installation on different network topologies (e.g. 2, 3, 4 server setups, etc...) 
- 
+Our highest priority moving forward is testing installation on different network topologies (e.g. 2, 3, 4 server setups, etc...)
+
 ## Maintainers
 
 * [Jonathan Green](https://github.com/jonathangreen)
